@@ -1,0 +1,41 @@
+SHELL=/bin/sh
+PATH=/usr/local/lib/mh:$PATH
+MAILDIR=$HOME/Mail
+LOGFILE=$HOME/Mail/logfile
+SENDMAIL=/usr/sbin/sendmail
+#VERBOSE=1
+VERBOSE=0
+EOL="
+"
+LOG="$EOL$EOL$EOL"
+LOG="New message log:$EOL"
+LOG=`perl GET_MESSAGE_INDEX`
+LOG="$EOL"
+
+## Recipe_1:
+## from multiple entry 
+:0 :
+* ^From\:(.*<.*>),(.*<.*>)+
+junkMailCompound1
+
+
+## Recipe_2:
+## from subject entry 
+:0 :
+* ^From\:.*([dD]iploma|medications|career|imphotgence|free|plills|cheap|College|Inteveo)
+junkMailCompound2
+
+
+## Recipe_3:
+## content
+:0 :
+* (GOLD|FREE)+
+junkMailCompound3
+
+## Recipe_4:
+## content
+:0 HB:
+* ^Content-Type: text/html
+* !^Content-Type: text/plain
+junkMailCompound4
+
